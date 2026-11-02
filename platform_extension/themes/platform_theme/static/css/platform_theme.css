@@ -1,0 +1,291 @@
+/* ==========================================================================
+   Platform Theme - Modern Cyber & Dark Glassmorphism Stylesheet for CTFd
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root {
+  --pf-font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --pf-font-mono: 'JetBrains Mono', monospace;
+  --pf-font-heading: 'Space Grotesk', var(--pf-font-main);
+
+  /* Deep Space Cyber Palette */
+  --pf-bg-base: #080d1a;
+  --pf-bg-card: rgba(15, 23, 42, 0.75);
+  --pf-bg-card-hover: rgba(30, 41, 59, 0.85);
+  --pf-background-gradient:
+    radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.06) 0%, transparent 40%),
+    linear-gradient(to bottom, #080d1a 0%, #060913 100%);
+  --pf-navbar-bg: rgba(8, 13, 26, 0.85);
+  --pf-navbar-brand: #ffffff;
+  --pf-nav-hover: rgba(255, 255, 255, 0.05);
+  --pf-jumbotron-gradient: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);
+  --pf-challenge-bg: rgba(15, 23, 42, 0.6);
+  --pf-button-hover-text: #080d1a;
+  --pf-form-bg: rgba(15, 23, 42, 0.8);
+  --pf-form-focus-bg: rgba(15, 23, 42, 0.95);
+  --pf-table-stripe: rgba(255, 255, 255, 0.02);
+  --pf-border: rgba(148, 163, 184, 0.15);
+  --pf-border-accent: rgba(0, 240, 255, 0.4);
+
+  /* Neon Cyber Accents */
+  --pf-cyan: #00f0ff;
+  --pf-cyan-glow: rgba(0, 240, 255, 0.25);
+  --pf-purple: #a855f7;
+  --pf-purple-glow: rgba(168, 85, 247, 0.25);
+  --pf-emerald: #10b981;
+  --pf-rose: #f43f5e;
+
+  /* Typography Colors */
+  --pf-text-primary: #f8fafc;
+  --pf-text-secondary: #94a3b8;
+  --pf-text-muted: #64748b;
+}
+
+[data-bs-theme="light"] {
+  --pf-bg-base: #f4f7fb;
+  --pf-bg-card: rgba(255, 255, 255, 0.88);
+  --pf-bg-card-hover: rgba(255, 255, 255, 0.96);
+  --pf-background-gradient:
+    radial-gradient(circle at 15% 15%, rgba(0, 160, 190, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(130, 70, 200, 0.07) 0%, transparent 40%),
+    linear-gradient(to bottom, #f8fbff 0%, #edf2f9 100%);
+  --pf-navbar-bg: rgba(248, 251, 255, 0.92);
+  --pf-navbar-brand: #172033;
+  --pf-nav-hover: rgba(15, 23, 42, 0.06);
+  --pf-jumbotron-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(232, 240, 249, 0.88) 100%);
+  --pf-challenge-bg: rgba(255, 255, 255, 0.78);
+  --pf-button-hover-text: #082f49;
+  --pf-form-bg: rgba(255, 255, 255, 0.92);
+  --pf-form-focus-bg: #ffffff;
+  --pf-table-stripe: rgba(15, 23, 42, 0.03);
+  --pf-border: rgba(15, 23, 42, 0.14);
+  --pf-border-accent: rgba(0, 150, 175, 0.5);
+  --pf-cyan: #007f96;
+  --pf-cyan-glow: rgba(0, 127, 150, 0.2);
+  --pf-purple: #7e22ce;
+  --pf-purple-glow: rgba(126, 34, 206, 0.18);
+  --pf-text-primary: #172033;
+  --pf-text-secondary: #475569;
+  --pf-text-muted: #64748b;
+}
+
+/* Base Body Styles */
+body {
+  font-family: var(--pf-font-main);
+  background-color: var(--pf-bg-base) !important;
+  color: var(--pf-text-primary) !important;
+  background-image: var(--pf-background-gradient) !important;
+  background-attachment: fixed !important;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+  font-family: var(--pf-font-heading);
+  letter-spacing: -0.02em;
+}
+
+code, pre, .font-monospace {
+  font-family: var(--pf-font-mono) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--pf-bg-base);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--pf-bg-card-hover);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pf-cyan);
+}
+
+/* Glassmorphism Navbar */
+.navbar-custom {
+  background: var(--pf-navbar-bg) !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid var(--pf-border);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.navbar-custom .navbar-brand {
+  color: var(--pf-navbar-brand) !important;
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-custom .brand-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--pf-cyan);
+  border: 1px solid var(--pf-cyan-glow);
+}
+
+.navbar-custom .nav-link {
+  color: var(--pf-text-secondary) !important;
+  font-weight: 500;
+  font-size: 0.925rem;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+  color: var(--pf-navbar-brand) !important;
+  background: var(--pf-nav-hover);
+  text-shadow: 0 0 12px var(--pf-cyan-glow);
+}
+
+/* Glassmorphism Cards & Panels */
+.card, .jumbotron, .modal-content {
+  background: var(--pf-bg-card) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--pf-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4) !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  border-color: var(--pf-border-accent) !important;
+  box-shadow: 0 12px 30px -5px rgba(0, 240, 255, 0.15) !important;
+}
+
+.jumbotron {
+  background: var(--pf-jumbotron-gradient) !important;
+  border: 1px solid var(--pf-border) !important;
+}
+
+/* Challenge Buttons & Cards */
+.challenge-button {
+  border-radius: 10px !important;
+  border: 1px solid var(--pf-border) !important;
+  background: var(--pf-challenge-bg) !important;
+  color: var(--pf-text-primary) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.challenge-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--pf-cyan) !important;
+  box-shadow: 0 0 15px var(--pf-cyan-glow) !important;
+  color: var(--pf-cyan) !important;
+}
+
+.challenge-button.solved-challenge {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  color: #34d399 !important;
+}
+
+/* Futuristic Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 114, 255, 0.35);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 198, 255, 0.5);
+}
+
+.btn-outline-primary {
+  border-color: var(--pf-cyan) !important;
+  color: var(--pf-cyan) !important;
+}
+
+.btn-outline-primary:hover {
+  background: var(--pf-cyan) !important;
+  color: var(--pf-button-hover-text) !important;
+  box-shadow: 0 0 15px var(--pf-cyan-glow);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  border: none !important;
+}
+
+/* Form Controls */
+.form-control, .form-select {
+  background-color: var(--pf-form-bg) !important;
+  border: 1px solid var(--pf-border) !important;
+  color: var(--pf-text-primary) !important;
+  border-radius: 8px !important;
+  padding: 0.65rem 0.9rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--pf-cyan) !important;
+  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.2) !important;
+  background-color: var(--pf-form-focus-bg) !important;
+}
+
+/* Tables (Scoreboard & Solves) */
+.table {
+  color: var(--pf-text-primary) !important;
+  border-color: var(--pf-border) !important;
+}
+
+.table th {
+  font-family: var(--pf-font-heading);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--pf-text-secondary);
+  border-bottom: 2px solid var(--pf-border) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: var(--pf-table-stripe) !important;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 240, 255, 0.04) !important;
+}
+
+/* Footer */
+footer.footer {
+  margin-top: 4rem;
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--pf-border);
+  color: var(--pf-text-muted);
+  font-size: 0.85rem;
+}
+
+/* Platform Branding Pill */
+.platform-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #d8b4fe;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}

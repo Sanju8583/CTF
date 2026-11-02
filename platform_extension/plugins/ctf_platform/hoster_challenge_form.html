@@ -1,0 +1,66 @@
+{% extends "plugins/ctf_platform/hoster_base.html" %}
+
+{% block hoster_content %}
+<h1>{{ "Edit challenge" if challenge else "Create challenge" }}</h1>
+<form method="post">
+  <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+  <input type="hidden" name="type" value="{{ challenge.type if challenge else 'standard' }}">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input class="form-control" id="name" name="name" maxlength="80" required value="{{ challenge.name if challenge else '' }}">
+  </div>
+  <div class="form-group">
+    <label for="category">Category</label>
+    <input class="form-control" id="category" name="category" maxlength="80" required value="{{ challenge.category if challenge else '' }}">
+  </div>
+  <div class="form-group">
+    <label for="value">Points</label>
+    <input class="form-control" id="value" name="value" type="number" min="0" required value="{{ challenge.value if challenge else 100 }}">
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" name="description" rows="6">{{ challenge.description if challenge else '' }}</textarea>
+  </div>
+  <div class="form-group">
+    <label for="hoster_flags">Static flags (one per line)</label>
+    <textarea class="form-control" id="hoster_flags" name="hoster_flags" rows="3">{{ flags if flags is defined else '' }}</textarea>
+  </div>
+  <div class="form-group">
+    <label for="state">State</label>
+    <select class="form-control" id="state" name="state">
+      {% set state = challenge.state if challenge else 'visible' %}
+      <option value="visible" {{ "selected" if state == "visible" }}>Visible</option>
+      <option value="hidden" {{ "selected" if state == "hidden" }}>Hidden</option>
+    </select>
+  </div>
+  <input type="hidden" name="max_attempts" value="{{ challenge.max_attempts if challenge else 0 }}">
+  <input type="hidden" name="position" value="{{ challenge.position if challenge else 0 }}">
+  <button class="btn btn-primary" type="submit">Save challenge</button>
+</form>
+
+{% if challenge %}
+  <hr>
+  <h2 class="h4">Challenge files</h2>
+  <ul>
+    {% for file in challenge.files %}
+      <li>
+        {{ file.location }}
+        <form class="d-inline" method="post" action="{{ url_for('ctf_platform_hoster.challenge_file_delete', challenge_id=challenge.id, file_id=file.id) }}">
+          <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+          <button class="btn btn-sm btn-danger" type="submit">Remove</button>
+        </form>
+      </li>
+    {% else %}
+      <li>No files attached.</li>
+    {% endfor %}
+  </ul>
+  <form method="post" enctype="multipart/form-data" action="{{ url_for('ctf_platform_hoster.challenge_file_upload', challenge_id=challenge.id) }}">
+    <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+    <div class="form-group">
+      <label for="file">Upload challenge file</label>
+      <input class="form-control-file" id="file" name="file" type="file" required>
+    </div>
+    <button class="btn btn-secondary" type="submit">Upload file</button>
+  </form>
+{% endif %}
+{% endblock %}

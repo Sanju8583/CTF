@@ -1,0 +1,81 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <div class="container">
+    <h1>Platform Themes</h1>
+    <p>Install a CTFd theme ZIP, then activate it from the standard theme settings.</p>
+  </div>
+</div>
+
+<div class="container">
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+  {% endfor %}
+
+  <div class="alert alert-warning" role="alert">
+    Only install themes from sources you trust. Theme templates and JavaScript
+    are code that will run in the CTFd application and in visitors' browsers.
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="h4">Install a theme</h2>
+      <p class="text-muted">
+        Upload a ZIP containing <code>templates/base.html</code> and files under
+        <code>static/</code>. The ZIP may contain one enclosing folder. The
+        upload filename determines the theme ID.
+      </p>
+      <form method="post" action="{{ url_for('ctf_platform.upload_theme') }}" enctype="multipart/form-data">
+        <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+        <div class="form-group">
+          <label for="theme">Theme ZIP (maximum 10 MB)</label>
+          <input class="form-control-file" id="theme" name="theme" type="file" accept=".zip,application/zip" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Install theme</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h2 class="h4">Installed themes</h2>
+      {% if themes %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr><th>Theme ID</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody>
+              {% for theme in themes %}
+                <tr>
+                  <td><code>{{ theme }}</code></td>
+                  <td>{% if theme == active_theme %}Active{% else %}Available{% endif %}</td>
+                  <td class="text-right">
+                    {% if theme != active_theme %}
+                      <form method="post" action="{{ url_for('ctf_platform.delete_theme', theme_name=theme) }}" onsubmit="return confirm('Remove this theme?');">
+                        <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+                        <button class="btn btn-sm btn-danger" type="submit">Remove</button>
+                      </form>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-muted mb-0">No uploaded themes yet.</p>
+      {% endif %}
+      <p class="mt-3 mb-0">
+        To activate an installed theme, open
+        <a href="{{ url_for('admin.config') }}">Admin Panel → Config → Theme</a>
+        and save your selection.
+      </p>
+      <p class="mt-2 mb-0">
+        <a href="{{ url_for('ctf_platform.manage_roles') }}">Manage Hoster roles</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

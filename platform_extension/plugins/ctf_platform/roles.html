@@ -1,0 +1,66 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="jumbotron">
+  <div class="container">
+    <h1>Platform Roles</h1>
+    <p>Assign limited Hoster access. CTFd administrator accounts stay unchanged.</p>
+  </div>
+</div>
+<div class="container">
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+  {% endfor %}
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="h4">Grant Hoster access</h2>
+      {% if participants %}
+        <form method="post" action="{{ url_for('ctf_platform.grant_hoster') }}">
+          <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+          <div class="form-group">
+            <label for="user_id">Participant account</label>
+            <select class="form-control" id="user_id" name="user_id" required>
+              {% for participant in participants %}
+                <option value="{{ participant.id }}">{{ participant.name }} ({{ participant.email }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button class="btn btn-primary" type="submit">Grant Hoster role</button>
+        </form>
+      {% else %}
+        <p class="mb-0">All participant accounts already have Hoster access.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <h2 class="h4">Current Hosters</h2>
+      {% if hosters %}
+        <div class="table-responsive">
+          <table class="table">
+            <thead><tr><th>Name</th><th>Email</th><th></th></tr></thead>
+            <tbody>
+              {% for hoster in hosters %}
+                <tr>
+                  <td>{{ hoster.name }}</td>
+                  <td>{{ hoster.email }}</td>
+                  <td class="text-right">
+                    <form method="post" action="{{ url_for('ctf_platform.revoke_hoster', user_id=hoster.id) }}">
+                      <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+                      <button class="btn btn-sm btn-danger" type="submit">Revoke</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="mb-0">No Hosters assigned.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

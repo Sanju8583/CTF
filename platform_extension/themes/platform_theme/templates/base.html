@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{{ title or Configs.ctf_name }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}" type="image/x-icon">
+
+  {{ meta | safe }}
+
+  {% block stylesheets %}
+    {{ Assets.css("assets/scss/main.scss") }}
+  {% endblock %}
+
+  <!-- Platform Theme Modern Styling -->
+  <link rel="stylesheet" href="{{ url_for('views.themes_beta', theme=get_ctf_theme(), path='css/platform_theme.css') }}">
+
+  {{ Plugins.styles }}
+
+  {{ Assets.js("assets/js/color_mode_switcher.js", type=None) }}
+
+  <script type="text/javascript">
+      window.init = {
+          'urlRoot': "{{ request.script_root }}",
+          'csrfNonce': "{{ Session.nonce }}",
+          'userMode': "{{ Configs.user_mode }}",
+          'userId': {{ Session.id }},
+          'userName': {{ User.name | tojson }},
+          'userEmail': {{ User.email | tojson }},
+          'userVerified': {{ User.verified | tojson }},
+          'teamId': {{ Team.id | tojson }},
+          'teamName': {{ Team.name | tojson }},
+          'start': {{ Configs.start | tojson }},
+          'end': {{ Configs.end | tojson }},
+          'themeSettings': {{ Configs.theme_settings | tojson }},
+          'eventSounds': [
+            "/themes/core/static/sounds/notification.webm",
+            "/themes/core/static/sounds/notification.mp3",
+          ],
+      }
+  </script>
+
+  {{ Configs.theme_header }}
+</head>
+<body class="d-flex flex-column min-vh-100 pt-5">
+  {% include "components/navbar.html" %}
+
+  <main role="main" class="flex-grow-1 pt-4">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  {% include "components/snackbar.html" %}
+
+  <footer class="footer mt-auto py-4">
+    <div class="container text-center">
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+        <div class="platform-pill">
+          <i class="fas fa-cube text-info"></i> CTF Platform Edition
+        </div>
+        <div>
+          <a href="https://ctfd.io" class="text-secondary text-decoration-none" target="_blank">
+            <small class="text-muted">
+              {% trans %}Powered by CTFd{% endtrans %}
+            </small>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  {% include "components/notifications.html" %}
+
+  {% block scripts %}
+    {{ Assets.js("assets/js/page.js") }}
+  {% endblock %}
+
+  <!-- Platform Theme Interactivity Script -->
+  <script src="{{ url_for('views.themes_beta', theme=get_ctf_theme(), path='js/platform_theme.js') }}"></script>
+
+  {{ Plugins.scripts }}
+
+  {{ Configs.theme_footer }}
+</body>
+</html>

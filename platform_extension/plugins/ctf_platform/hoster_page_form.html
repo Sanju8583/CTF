@@ -1,0 +1,32 @@
+{% extends "plugins/ctf_platform/hoster_base.html" %}
+
+{% block hoster_content %}
+<h1>{{ "Edit event page" if page else "Create event page" }}</h1>
+<form method="post">
+  <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input class="form-control" id="title" name="title" maxlength="80" required value="{{ page.title if page else '' }}">
+  </div>
+  <div class="form-group">
+    <label for="route">Route (for example, rules)</label>
+    <input class="form-control" id="route" name="route" maxlength="128" required value="{{ page.route if page else '' }}">
+  </div>
+  <div class="form-group">
+    <label for="content">Content</label>
+    <textarea class="form-control" id="content" name="content" rows="12">{{ page.content if page else '' }}</textarea>
+  </div>
+  <div class="form-group">
+    <label for="format">Format</label>
+    {% set current_format = page.format if page else 'markdown' %}
+    <select class="form-control" id="format" name="format">
+      <option value="markdown" {{ "selected" if current_format == "markdown" }}>Markdown</option>
+      <option value="html" {{ "selected" if current_format == "html" }}>HTML</option>
+    </select>
+  </div>
+  <input type="hidden" name="draft" value="{{ page.draft if page else false }}">
+  <input type="hidden" name="hidden" value="{{ page.hidden if page else false }}">
+  <input type="hidden" name="auth_required" value="{{ page.auth_required if page else false }}">
+  <button class="btn btn-primary" type="submit">Save page</button>
+</form>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "plugins/ctf_platform/hoster_base.html" %}
+
+{% block content %}
+<div class="container py-4">
+  <h1>Hoster workspace</h1>
+  <p class="text-secondary">Manage challenges and event pages. Participant accounts and global CTF settings are not available here.</p>
+
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+  {% endfor %}
+
+  <section class="card p-3 mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h4 mb-0">Challenges</h2>
+      <a class="btn btn-primary" href="{{ url_for('ctf_platform_hoster.challenge_new') }}">Create challenge</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Name</th><th>Category</th><th>Points</th><th>State</th><th></th></tr></thead>
+        <tbody>
+          {% for challenge in challenges %}
+            <tr>
+              <td>{{ challenge.name }}</td>
+              <td>{{ challenge.category }}</td>
+              <td>{{ challenge.value }}</td>
+              <td>{{ challenge.state }}</td>
+              <td>
+                {% if challenge.type == "standard" %}
+                  <a href="{{ url_for('ctf_platform_hoster.challenge_edit', challenge_id=challenge.id) }}">Edit</a>
+                {% else %}
+                  <span class="text-muted">Unsupported type</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% else %}
+            <tr><td colspan="5">No challenges yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="h4 mb-0">Event pages</h2>
+      <a class="btn btn-primary" href="{{ url_for('ctf_platform_hoster.page_new') }}">Create page</a>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Title</th><th>Route</th><th>Format</th><th></th></tr></thead>
+        <tbody>
+          {% for page in pages %}
+            <tr>
+              <td>{{ page.title }}</td>
+              <td>{{ page.route }}</td>
+              <td>{{ page.format }}</td>
+              <td><a href="{{ url_for('ctf_platform_hoster.page_edit', page_id=page.id) }}">Edit</a></td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4">No event pages yet.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}
